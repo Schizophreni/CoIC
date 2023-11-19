@@ -26,7 +26,9 @@ We also find that after tuned on SPAData, DRSformer w/o CoIC cannot well handle 
 
 ### More real-world deraining comparison
 
+We provide more high-quality real-world deraining results to demonstrate the effectiveness of the proposed CoIC, while enables DRSformer to learn from both mixed synthetic datasets and real-world SPAData datasets.
 
+![real_world](figures/more_real_world.png)
 
 
 
