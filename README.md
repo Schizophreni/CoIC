@@ -17,10 +17,12 @@ We tune DRSformer trained w/o and w/ CoIC on a pseudo real-world dataset SPAData
 
 We also find that after tuned on SPAData, DRSformer w/o CoIC cannot well handle both synthetic and real-world rain. However, with the help of the CoIC, DRSformer can achieve much better performances. Below are quantitative results (PSNR only, full results can be seen in our revised paper):
 
-| Methods            | Rain200L | Rain200H | Rain800 | Rain1200 | Rain1400 | SPAData |
-| ------------------ | -------- | -------- | ------- | -------- | -------- | ------- |
-| DRSformer w/o CoIC |          |          |         |          |          |         |
-| DRSformer w/ CoIC  |          |          |         |          |          |         |
+| Methods            | Rain200L  | Rain200H  | Rain800   | Rain1200  | Rain1400  | SPAData   |
+| ------------------ | --------- | --------- | --------- | --------- | --------- | --------- |
+| DRSformer w/o CoIC | 39.32     | 29.27     | 28.85     | 34.91     |           |           |
+| DRSformer w/ CoIC  | **39.70** | **30.31** | **29.73** | **35.02** | **33.94** | **46.03** |
+
+The results tabulated above demonstrate that **a pre-trained DRSformer model can simultaneously perform well on five synthetic datasets, as well as the pesudo real-world SPAData, with the help of the proposed CoIC strategy**. *In the future, we will step further to learn a unifed image deraining model for more practical utilization*. 
 
 ----
 
