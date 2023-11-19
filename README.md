@@ -17,7 +17,7 @@ We tune DRSformer trained w/o and w/ CoIC on a pseudo real-world dataset SPAData
 
 We also find that after tuned on SPAData, DRSformer w/o CoIC cannot well handle both synthetic and real-world rain. However, with the help of the CoIC, DRSformer can achieve much better performances. Below are quantitative results (PSNR only, full results can be seen in our revised paper):
 
-| Methods            | Rain200L  | Rain200H  | Rain800   | Rain1200  | Rain1400  | SPAData   |
+| Methods            | Rain200L  | Rain200H  | Rain800   | DID-Data  | DDN-Data  | SPAData   |
 | ------------------ | --------- | --------- | --------- | --------- | --------- | --------- |
 | DRSformer w/o CoIC | 39.32     | 29.27     | 28.85     | 34.91     | 33.71     | 45.46     |
 | DRSformer w/ CoIC  | **39.70** | **30.31** | **29.73** | **35.02** | **33.94** | **46.03** |
