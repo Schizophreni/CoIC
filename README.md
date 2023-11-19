@@ -11,9 +11,9 @@
 
 ### A real-world deraining demo on RealInt
 
-We tune DRSformer trained w/o and w/ CoIC on a pseudo real-world dataset SPAData for another 105k iters. Surprisingly, we observe that DRSformer w/ CoIC tuned on SPAData can efficiently deraining challenging images contaminated with intricate rains. Below are a demon comparison. This indicates that the proposed CoIC can help train powerful deraining models using *both synthetic and real-world datasets*.
+We tune DRSformer trained w/o and w/ CoIC on a pseudo real-world dataset SPAData for another 105k iters. Surprisingly, we observe that DRSformer w/ CoIC tuned on SPAData can efficiently deraining challenging images contaminated with intricate rains. Below is a comparison demo. This indicates that the proposed CoIC can help train powerful deraining models using *both synthetic and real-world datasets*.
 
-![demo](figures/tune_real_comp.gif)  *The Left: * ***DRSformer w/o CoIC tuned on SPAData**                               *The Right: *  ***DRSformer w/ CoIC tuned on SPAData***
+![demo](figures/tune_real_comp.gif)  *The Left:* ***DRSformer w/o CoIC tuned on SPAData**                               *The Right:*  ***DRSformer w/ CoIC tuned on SPAData***
 
 We also find that after tuned on SPAData, DRSformer w/o CoIC cannot well handle both synthetic and real-world rain. However, with the help of the CoIC, DRSformer can achieve much better performances. Below are quantitative results (PSNR only, full results can be seen in our revised paper):
 
