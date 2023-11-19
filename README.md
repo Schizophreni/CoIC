@@ -36,5 +36,5 @@ We also find that after tuned on SPAData, DRSformer w/o CoIC cannot well handle 
 
 Below we show the training loss curves of BRN, RCDNet, DGUNet, IDT, and DRSformer trained on mixed synthetic datasets. Additionally, training loss curves of DRSformer tuned on SPAData are also included.
 
-<img src="figures/train_hist.pdf" width="800"/>
+<img src="https://github.com/Schizophreni/CoIC/blob/main/figures/train_hist.pdf" width="800"/>
 
