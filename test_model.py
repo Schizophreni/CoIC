@@ -1,15 +1,9 @@
-"""
-Test mix dataset, images are read with PIL
-test using the way of IDT, where image are first cropped to non-overlap 128x128 patches
-"""
-
 from PIL import Image
 import cv2
 import os
 import argparse
 import numpy as np
 import torch
-from utils import is_image
 from evaluation import rgb_to_y
 from evaluation import psnr as compare_psnr
 from evaluation import ssim as compare_ssim

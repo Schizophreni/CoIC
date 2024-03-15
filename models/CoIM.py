@@ -6,10 +6,8 @@ import torch.nn as nn
 import time
 import torch.nn.functional as F
 from torch.backends import cudnn
-#cudnn.deterministic = True
-#cudnn.benchmark = False
 
-print("utilize IPG in simple | parallel mode (feature-aware multiplication) !")
+print("utilize CoIM in simple | parallel mode (feature-aware multiplication) !")
 
 class BaseConv(nn.Module):
     """
@@ -132,7 +130,6 @@ class TConv(nn.Module):
                 nn.Linear(16, in_channels // groups + out_channels+kernel_size**2),
             )    
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
-        # self.init()
 
     def forward(self, base_x, tran_x=None, mode='normal'):
         if mode == 'normal' or self.kernel_size == 1:
@@ -181,13 +178,6 @@ class TConvTranspose(nn.Module):
             nn.Linear(16, in_channels+out_channels+kernel_size**2),
         )
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
-        # self.init()
-    
-    def init(self):
-        for m in self.g2pa_wgen.modules():
-            if isinstance(m, nn.Linear):
-                nn.init.zeros_(m.weight)
-                nn.init.zeros_(m.bias)
 
     def forward(self, base_x, tran_x=None, mode='normal'):
         """
@@ -217,6 +207,7 @@ class TConvTranspose(nn.Module):
             return base_out, tran_x
 
 def compare(rounds=1000):
+    ## compare parallel coim with seralized coim
     groups = 4
     xs = torch.rand(8, 12, 64, 64).cuda()  # a batch of 8 examples
     ws = torch.rand(8, 16, 12 // groups, 3, 3).cuda()  # 8 specific weight

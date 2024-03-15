@@ -10,10 +10,9 @@ from torch.backends import cudnn
 import random
 import torch.nn.functional as F
 from evaluation import psnr as compare_psnr
-import shutil
 from models.select_model import define_model
 from models.contrastive import MoCo
-from common_datasets.mix_dataset_global import getcontrastivemixloader
+from mix_dataset import getcontrastivemixloader
 from torch.optim.lr_scheduler import MultiStepLR
 from SSIM import SSIM
 
@@ -52,10 +51,6 @@ class Experiments:
         self.writter = SummaryWriter(logdir=opt.save_path)
         self.writter.add_text(tag="opt", text_string=str(opt))
         self.init_epoch = 0
-        # save files
-        shutil.copy("common_datasets/mix_dataset_global.py", os.path.join(self.opt.save_path, "dataset.py"))
-        shutil.copy("models/contrastive.py", os.path.join(self.opt.save_path, "networks.py"))
-        shutil.copy(__file__, os.path.join(self.opt.save_path, "train.py"))
         # Load latest checkpoint if exists
         if os.path.exists(os.path.join(opt.save_path, 'latest.tar')):
             self.init_epoch = self.load_checkpoint(os.path.join(self.opt.save_path, 'latest.tar'))
@@ -103,7 +98,7 @@ class Experiments:
                 im_negs = torch.cat([(max_diff_rain + target_train.unsqueeze(1)).clamp_(0.0, 1.0), im_negs], dim=1)
                 self.base_optimizer.zero_grad()
                 self.tran_optimizer.zero_grad()
-                if step <= 4000000:
+                if step <= self.opt.stage1_iters:
                     outs = self.model(input_train, mode="normal")
                     base_loss = - self.criterion(outs, target_train)
                     contra_loss = 0.0*base_loss
@@ -124,7 +119,7 @@ class Experiments:
                     self.writter.add_scalar("base_loss", base_loss.item(), step)
                     self.writter.add_scalar("contra_loss", contra_loss.item(), step)
                     self.writter.add_scalar("psnr", psnr_train, step)
-                    if step <= 4000000:
+                    if step <= self.opt.stage1_iters:
                         msg = 'epoch {:03d}/{:03d}, [{:03d}/{:03d}] | base_loss: {:6f} | contra_loss: {:6f} | psnr: {:4f}'.format(epoch, self.epochs, iter, len(self.dataloader_train), 
                                     base_loss.item(), 0.0, psnr_train)
                     else:
@@ -133,14 +128,14 @@ class Experiments:
 
                     print(msg)
                 step += 1
-                if step == 40000:
+                if step == self.opt.stage1_iters:
                     torch.save({
                         'epoch': epoch,
                         'base_state_dict': self.model.state_dict(),
                         'tran_state_dict': self.feat_extractor.state_dict(),
                         'base_optim': self.base_optimizer.state_dict(),
                         'tran_optim': self.tran_optimizer.state_dict(),
-                    }, os.path.join(self.opt.save_path, 'latest_40k.tar'))
+                    }, os.path.join(self.opt.save_path, 'latest_stage1.tar'))
             # learning rate scheduler
             self.base_scheduler.step(epoch)
             self.tran_scheduler.step(epoch)
@@ -161,13 +156,13 @@ if __name__ == '__main__':
     parser.add_argument("--epochs", type=int, default=400, help="Number of training epochs")
     parser.add_argument("--milestone", type=int, default=[100, 250, 350], help="When to decay learning rate")
     parser.add_argument("--lr", type=float, default=1e-4, help="initial learning rate")
-    parser.add_argument("--save_path", type=str, default="logs/IDT-H8L1214-baseline", help='path to save models and log files')
+    parser.add_argument("--save_path", type=str, default="logs/IDT-H8L1214-coic", help='path to save models and log files')
     parser.add_argument("--save_freq", type=int, default=1, help='save intermediate model')
     parser.add_argument("--use_GPU", action="store_true", help='use GPU or not')
     parser.add_argument("--gpu_id", type=str, default="0", help='GPU id')
-    parser.add_argument("--data_paths", type=str, default="/home1/zhangsy/rh/data/derain/Rain200H/train/, \
-                       /home1/zhangsy/rh/data/derain/Rain200L/train/, /home1/zhangsy/rh/data/derain/Rain800/train/,\
-                        /home1/zhangsy/rh/data/derain/Rain1200_new/train, /home1/zhangsy/rh/data/derain/Rain14000/train")
+    parser.add_argument("--data_paths", type=str, default="/home/wran/Public/datasets/derain/CoIC_datasets/Rain200H/train, \
+                       /home/wran/Public/datasets/derain/CoIC_datasets/Rain200L/train/, /home/wran/Public/datasets/derain/CoIC_datasets/Rain800/train/, \
+                       /home/wran/Public/datasets/derain/CoIC_datasets/DID/train, /home/wran/Public/datasets/derain/CoIC_datasets/DDN/train")
     parser.add_argument("--model_name", type=str, default="IDT", help="training model name")
     parser.add_argument("--crop_size", type=int, default=128)
     parser.add_argument("--aug_times", type=int, default=1, help="augmentation times")

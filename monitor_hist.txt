@@ -1,9 +1,0 @@
-[53406, 160576]
-All PIDs are running, [#NUM 2] ...
-All PIDs are running, [#NUM 2] ...
-Traceback (most recent call last):
-  File "monitor_program.py", line 61, in <module>
-    main()
-  File "monitor_program.py", line 54, in main
-    time.sleep(5)  # Adjust sleep time as needed
-KeyboardInterrupt

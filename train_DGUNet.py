@@ -1,6 +1,3 @@
-"""
-Train DGUNet with mixed datasets following Low-Rank Parameter Adaptation strategy
-"""
 from tensorboardX import SummaryWriter
 import argparse
 import numpy as np
@@ -11,10 +8,9 @@ import random
 import torch.nn.functional as F
 from evaluation import psnr as compare_psnr
 from functools import reduce
-import shutil
 from models.select_model import define_model
 from models.contrastive import MoCo
-from common_datasets.mix_dataset_global import getcontrastivemixloader
+from mix_dataset import getcontrastivemixloader
 
 
 class CharbonnierLoss(torch.nn.Module):
@@ -95,10 +91,6 @@ class Experiments:
         self.writter = SummaryWriter(logdir=opt.save_path)
         self.writter.add_text(tag="opt", text_string=str(opt))
         self.init_epoch = 1
-        # save files
-        shutil.copy("common_datasets/mix_dataset_global.py", os.path.join(self.opt.save_path, "dataset.py"))
-        shutil.copy("models/contrastive.py", os.path.join(self.opt.save_path, "networks.py"))
-        shutil.copy(__file__, os.path.join(self.opt.save_path, "train.py"))
         # Load latest checkpoint if exists
         if os.path.exists(os.path.join(opt.save_path, 'latest.tar')):
             self.init_epoch = self.load_checkpoint(os.path.join(self.opt.save_path, 'latest.tar'))
@@ -158,7 +150,7 @@ class Experiments:
                 im_negs = torch.cat([(max_diff_rain + target_train.unsqueeze(1)).clamp_(0.0, 1.0), im_negs], dim=1)
                 self.base_optimizer.zero_grad()
                 self.tran_optimizer.zero_grad()
-                if step <= 40000:
+                if step <= self.opt.stage1_iters:
                     outs = self.model(img=input_train, tran_x=None, mode="normal")
                     base_loss = compute_loss(outs, target_train)
                     (base_loss).backward()
@@ -186,14 +178,14 @@ class Experiments:
                                     base_loss.item(), contra_loss.item(), psnr_train)
                     print(msg)
                 step += 1
-                if step == 40000:
+                if step == self.opt.stage1_iters:
                     torch.save({
                         'epoch': epoch,
                         'base_state_dict': self.model.state_dict(),
                         'tran_state_dict': self.feat_extractor.state_dict(),
                         'base_optim': self.base_optimizer.state_dict(),
                         'tran_optim': self.tran_optimizer.state_dict(),
-                    }, os.path.join(self.opt.save_path, 'latest_40k.tar'))
+                    }, os.path.join(self.opt.save_path, 'latest_stage1.tar'))
             # learning rate scheduler
             self.base_scheduler.step(epoch=epoch)
             self.tran_scheduler.step(epoch=epoch)
@@ -209,35 +201,33 @@ class Experiments:
             }, os.path.join(self.opt.save_path, 'latest_{}.tar'.format(epoch)))
 
 if __name__ == '__main__':
-    from occ_gpu import occumpy_mem
-    
     parser = argparse.ArgumentParser(description='DGUNet_train')
     parser.add_argument("--depth", type=int, default=5, help="iteration depth")
     parser.add_argument("--batch_size", type=int, default=16, help="Training batch size")
     parser.add_argument("--tot_iters", type=int, default=400000, help="Number of training epochs")
+    parser.add_argument("--stage1_iters", type=int, default=40000, help="Number of stage1 training epochs")
     parser.add_argument("--lr", type=float, default=2e-4, help="initial learning rate")
-    parser.add_argument("--save_path", type=str, default="logs/DGUNet-H8L1214-CoIC-rerun", help='path to save models and log files')
+    parser.add_argument("--save_path", type=str, default="logs/DGUNet-H8L1214-coic", help='path to save models and log files')
     parser.add_argument("--save_freq", type=int, default=1, help='save intermediate model')
     parser.add_argument("--use_GPU", action="store_true", help='use GPU or not')
     parser.add_argument("--gpu_id", type=str, default="0", help='GPU id')
-    parser.add_argument("--data_paths", type=str, default="/home/rw/Public/datasets/derain/Rain200H/train, \
-                       /home/rw/Public/datasets/derain/Rain200L/train/, /home/rw/Public/datasets/derain/Rain800/train/, \
-                       /home/rw/Public/datasets/derain/Rain1200_new/train, /home/rw/Public/datasets/derain/Rain14000/train")
+    parser.add_argument("--data_paths", type=str, default="/home/wran/Public/datasets/derain/CoIC_datasets/Rain200H/train, \
+                       /home/wran/Public/datasets/derain/CoIC_datasets/Rain200L/train/, /home/wran/Public/datasets/derain/CoIC_datasets/Rain800/train/, \
+                       /home/wran/Public/datasets/derain/CoIC_datasets/DID/train, /home/wran/Public/datasets/derain/CoIC_datasets/DDN/train")
     parser.add_argument("--model_name", type=str, default="DGUNet", help="training model name")
     parser.add_argument("--crop_size", type=int, default=128)
     parser.add_argument("--aug_times", type=int, default=1, help="augmentation times")
-    parser.add_argument("--num_workers", type=int, default=16, help="number of workers")
+    parser.add_argument("--num_workers", type=int, default=8, help="number of workers")
     parser.add_argument("--seed", type=int, default=1234, help='random seed')
     parser.add_argument("--dim_in", type=int, default=128, help='dimension of code z')
-    parser.add_argument("--contra_loss_weight", type=float, default=1.0, help="contra_loss_weight")
+    parser.add_argument("--contra_loss_weight", type=float, default=0.2, help="contra_loss_weight")
     parser.add_argument("--temperature", type=float, default=1.0, help="temperature")
     parser.add_argument("--n_neg", type=int, default=4, help="number of negative examples")
     opt = parser.parse_args()
 
-    train_type = __file__.split("train")[-1].split(".")[0]
     dim_type = "_{}d".format(opt.dim_in)
     contra_type = "_{}contra".format(opt.contra_loss_weight)
-    opt.save_path = opt.save_path + train_type + dim_type + contra_type
+    opt.save_path = opt.save_path + dim_type + contra_type
 
     os.environ['CUDA_VISIBLE_DEVICES'] = str(opt.gpu_id)    
     random.seed(opt.seed)
@@ -246,7 +236,5 @@ if __name__ == '__main__':
     torch.cuda.manual_seed_all(opt.seed)
     cudnn.deterministic = True
     cudnn.benchmark = False
-    occumpy_mem(opt.gpu_id, block_mem=1024*15)
-
     exp = Experiments(opt=opt)
     exp.train()
