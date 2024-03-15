@@ -12,9 +12,9 @@
 
 ---
 
-### A real-world deraining demo on RealInt
+### Real-world deraining on RealInt
 
-![demo](figures/tune_real_comp.gif)             *Left:* ***DRSformer w/o CoIC adding SPAData***                                           *Right:*  ***DRSformer w/ CoIC adding SPAData***
+![demo](figures/tune_real_comp.gif)             *Left:* ***DRSformer w/o CoIC adding SPAData***                       *Right:*  ***DRSformer w/ CoIC adding SPAData***
 
 We also find that after further trained on SPAData, DRSformer w/o CoIC cannot well handle both synthetic and real-world rain. However, with the help of the CoIC, DRSformer can achieve much better performances. Below are quantitative results (PSNR only, full results can be seen in our revised paper):
 
@@ -70,7 +70,7 @@ datasets|
 
 ### Evaluation
 
-Plase following instruction below to test the model:
+Please follow the instruction below to test the model:
 
 
 
@@ -84,3 +84,29 @@ We provide more high-quality real-world deraining results to demonstrate the eff
 
 ![real_world](figures/more_real_world.png)
 
+---
+
+### Citation
+
+If you are interested in this work, please consider citing this paper:
+
+```
+@inproceedings{ran2023exploring,
+  title={Harnessing joint rain-/detail-aware representations to eliminate intricate rains},
+  author={Ran, Wu and Ma, Peirong and He, Zhiquan and Ren, Hao and Lu, Hong},
+  booktitle={International Conference on Learning Representations},
+  year={2024}
+}
+```
+
+---
+
+### Acknowledgement
+
+The benchmarks are built on: [BRN](https://github.com/csdwren/RecDerain) [RCDNet](https://github.com/hongwang01/RCDNet) [DGUNet](https://github.com/MC-E/Deep-Generalized-Unfolding-Networks-for-Image-Restoration) [IDT](https://github.com/jiexiaou/IDT) [DRSformer](https://github.com/cschenxiang/DRSformer). Thanks for their awesome work.
+
+---
+
+### Contact
+
+Should you have any question or suggestion, please contact [wran21@m.fudan.edu.cn](wran21@m.fudan.edu.cn)
