@@ -64,15 +64,41 @@ datasets|
 1. Please download all datasets listed above and make sure they are well-organized
 2. You can train benchmark models without or with CoIC following:
 
+```
+# train models without CoIC (with GPU)
+python train_{model_name}.py --model_name model_name --use_GPU --gpu_id gpu_id --contra_loss_weight 0.0 --stage1_iters 40000000
 
+# train models with CoIC (with GPU)
+python train_{model_name}.py --model_name model_name --use_GPU --gpu_id gpu_id --contra_loss_weight 0.2 --stage1_iters 40000
+```
 
+For example, you can train DRSformer using these instructions: 
+```
+# train DRSformer without CoIC on synthetic datasets
+python train_DRSformer.py --model_name DRSformer --use_GPU --gpu_id gpu_id --contra_loss_weight 0.0 --stage1_iters 40000000 --data_paths datasets/Rain200H/train,datasets/Rain200L/train,datasets/Rain800/train,datasets/DID/train,datasets/DDN/train
 
+# train DRSformer with CoIC on synthetic datasets
+python train_DRSformer.py --model_name DRSformer --use_GPU --gpu_id gpu_id --contra_loss_weight 0.2 --stage1_iters 40000 --data_paths datasets/Rain200H/train,datasets/Rain200L/train,datasets/Rain800/train,datasets/DID/train,datasets/DDN/train
+
+# train DRSformer without CoIC on synthetic datasets & SPA
+python train_DRSformer.py --model_name DRSformer --use_GPU --gpu_id gpu_id --contra_loss_weight 0.0 --stage1_iters 40000000 --data_paths datasets/Rain200H/train,datasets/Rain200L/train,datasets/Rain800/train,datasets/DID/train,datasets/DDN/train,datasets/spa
+
+# train DRSformer with CoIC on synthetic datasets & SPA
+python train_DRSformer.py --model_name DRSformer --use_GPU --gpu_id gpu_id --contra_loss_weight 0.2 --stage1_iters 40000 --data_paths datasets/Rain200H/train,datasets/Rain200L/train,datasets/Rain800/train,datasets/DID/train,datasets/DDN/train,datasets/spa
+```
+
+In practice, we found that DGUNet trained with CoIC may struggle with NaN loss for unknown reasons, just stop it and train it from latest checkpoints.
 
 ### Evaluation
 
 Please follow the instruction below to test the model:
+```
+# test model without CoIC
+python test_model.py --use_GPU --gpu_id gpu_id --test_model model_checkpoint_path --model_name model_name --load_mode normal
 
-
+# test model with CoIC
+python test_model.py --use_GPU --gpu_id gpu_id --test_model model_checkpoint_path --feat_ext encoder_checkpoint_path --model_name model_name --load_mode tran
+```
 
 We evaluate PSNR/SSIM referred to the Python code from this repository: https://github.com/leftthomas/Restormer
 

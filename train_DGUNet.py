@@ -211,9 +211,9 @@ if __name__ == '__main__':
     parser.add_argument("--save_freq", type=int, default=1, help='save intermediate model')
     parser.add_argument("--use_GPU", action="store_true", help='use GPU or not')
     parser.add_argument("--gpu_id", type=str, default="0", help='GPU id')
-    parser.add_argument("--data_paths", type=str, default="/home/wran/Public/datasets/derain/CoIC_datasets/Rain200H/train, \
-                       /home/wran/Public/datasets/derain/CoIC_datasets/Rain200L/train/, /home/wran/Public/datasets/derain/CoIC_datasets/Rain800/train/, \
-                       /home/wran/Public/datasets/derain/CoIC_datasets/DID/train, /home/wran/Public/datasets/derain/CoIC_datasets/DDN/train")
+    parser.add_argument("--data_paths", type=str, default="datasets/Rain200H/train, \
+                       datasets/Rain200L/train/, datasets/Rain800/train/, \
+                       datasets/DID/train, datasets/DDN/train")
     parser.add_argument("--model_name", type=str, default="DGUNet", help="training model name")
     parser.add_argument("--crop_size", type=int, default=128)
     parser.add_argument("--aug_times", type=int, default=1, help="augmentation times")

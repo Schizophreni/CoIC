@@ -1,6 +1,3 @@
-"""
-Train DGUNet with mixed datasets following Low-Rank Parameter Adaptation strategy
-"""
 from tensorboardX import SummaryWriter
 import argparse
 import numpy as np
@@ -153,16 +150,16 @@ class Experiments:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='IDT_train')
     parser.add_argument("--batch_size", type=int, default=8, help="Training batch size")
-    parser.add_argument("--epochs", type=int, default=400, help="Number of training epochs")
+    parser.add_argument("--epochs", type=int, default=110, help="Number of training epochs")
     parser.add_argument("--milestone", type=int, default=[100, 250, 350], help="When to decay learning rate")
     parser.add_argument("--lr", type=float, default=1e-4, help="initial learning rate")
     parser.add_argument("--save_path", type=str, default="logs/IDT-H8L1214-coic", help='path to save models and log files')
     parser.add_argument("--save_freq", type=int, default=1, help='save intermediate model')
     parser.add_argument("--use_GPU", action="store_true", help='use GPU or not')
     parser.add_argument("--gpu_id", type=str, default="0", help='GPU id')
-    parser.add_argument("--data_paths", type=str, default="/home/wran/Public/datasets/derain/CoIC_datasets/Rain200H/train, \
-                       /home/wran/Public/datasets/derain/CoIC_datasets/Rain200L/train/, /home/wran/Public/datasets/derain/CoIC_datasets/Rain800/train/, \
-                       /home/wran/Public/datasets/derain/CoIC_datasets/DID/train, /home/wran/Public/datasets/derain/CoIC_datasets/DDN/train")
+    parser.add_argument("--data_paths", type=str, default="datasets/Rain200H/train, \
+                       datasets/Rain200L/train/, datasets/Rain800/train/, \
+                       datasets/DID/train, datasets/DDN/train")
     parser.add_argument("--model_name", type=str, default="IDT", help="training model name")
     parser.add_argument("--crop_size", type=int, default=128)
     parser.add_argument("--aug_times", type=int, default=1, help="augmentation times")

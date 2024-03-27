@@ -1,4 +1,3 @@
-from PIL import Image
 import cv2
 import os
 import argparse
@@ -54,8 +53,8 @@ def obtain_score_map(base_h, base_w):
     return scores[None, :, :]
 
 def test_Rain200H():
-    input_path = os.path.join('/home1/zhangsy/rh/data/derain/Rain200H/test/rain/X2')
-    target_path = os.path.join('/home1/zhangsy/rh/data/derain/Rain200H/test/norain')
+    input_path = os.path.join('datasets/test/rain/X2')
+    target_path = os.path.join('datasets/Rain200H/test/norain')
     imgs = []
     gts = []
     for i in range(200):
@@ -67,8 +66,8 @@ def test_Rain200H():
     return imgs, gts
 
 def test_Rain200L():
-    input_path = os.path.join('/home1/zhangsy/rh/data/derain/Rain200L/test/rain/X2')
-    target_path = os.path.join('/home1/zhangsy/rh/data/derain/Rain200L/test/norain')
+    input_path = os.path.join('datasets/test/rain/X2')
+    target_path = os.path.join('datasets/Rain200L/test/norain')
     imgs = []
     gts = []
     for i in range(200):
@@ -80,8 +79,8 @@ def test_Rain200L():
     return imgs, gts
 
 def test_Rain800():
-    input_path = os.path.join('/home1/zhangsy/rh/data/derain/Rain800/test/rain')
-    target_path = os.path.join('/home1/zhangsy/rh/data/derain/Rain800/test/norain')
+    input_path = os.path.join('datasets/Rain800/test/rain')
+    target_path = os.path.join('datasets/Rain800/test/norain')
     imgs = []
     gts = []
     for i in range(100):
@@ -92,17 +91,17 @@ def test_Rain800():
     print("process Rain800! total length: ", len(imgs))
     return imgs, gts 
 
-def test_Rain1200():
-    input_path = os.path.join('/home1/zhangsy/rh/data/derain/Rain1200_new/test')
+def test_DID():
+    input_path = os.path.join('datasets/DID/test')
     imgs = []
     for i in range(1200):
         input_file = "%d.jpg" % (i+1)
         imgs.append(os.path.join(input_path, input_file))
     return imgs, imgs
 
-def test_Rain1400():
-    input_path = os.path.join('/home1/zhangsy/rh/data/derain/Rain14000/test/rain')
-    target_path = os.path.join('/home1/zhangsy/rh/data/derain/Rain14000/test/norain')
+def test_DDN():
+    input_path = os.path.join('datasets/DDN/test/rain')
+    target_path = os.path.join('datasets/DDN/test/norain')
     imgs, gts = [], []
     for i in range(900, 1000):
         target_file = "%d.jpg" % (i + 1)
@@ -112,20 +111,9 @@ def test_Rain1400():
             gts.append(os.path.join(target_path, target_file))
     return imgs, gts
 
-def test_Rain12():
-    input_path = os.path.join("/home/rw/Public/datasets/derain/Rain12/")
-    imgs, gts = [], []
-    for i in range(12):
-        input_file = "%03d_in.png" % (i+1)
-        target_file = "%03d_GT.png" % (i+1)
-        imgs.append(os.path.join(input_path, input_file))
-        gts.append(os.path.join(input_path, target_file))
-    print("process Rain12!, total length: ", len(imgs))
-    return imgs, gts
-
 def test_spa():
-    input_path = os.path.join('/home1/zhangsy/rh/data/derain/spa/real_test_1000/rain')
-    target_path = os.path.join('/home1/zhangsy/rh/data/derain/spa/real_test_1000/gt')
+    input_path = os.path.join('datasets/spa/real_test_1000/rain')
+    target_path = os.path.join('datasets/spa/real_test_1000/gt')
     imgs = []
     gts = []
     for i in range(1000):
@@ -136,30 +124,10 @@ def test_spa():
     print("process SPA! total length: ", len(imgs))
     return imgs, gts 
 
-def test_Practical():
-    input_path = "/home/rw/Public/datasets/derain/Practical"
-    imgs = glob.glob(os.path.join(input_path, "*.jpg"))
-    print("Process practical!, total length ", len(imgs))
-    return imgs, imgs
-
 def test_RealInt():
-    input_path = "/home1/zhangsy/rh/data/derain/Real_Internet"
+    input_path = "datatsets/Real_Internet"
     imgs = glob.glob(os.path.join(input_path, "*.png"))
     print("Process Real Internet, total length, ", len(imgs))
-    return imgs, imgs
-
-def test_eval():
-    input_path = "/home/rw/Public/datasets/derain/Real_Internet"
-    idxes = [35, 45, 57, 67, 69, 94, 95, 121]
-    imgs = []
-    for idx in idxes:
-        imgs.append(os.path.join(input_path, "rain-%03d.png" % idx))
-    return imgs, imgs
-
-def test_Nature():
-    input_path = "/home/rw/Public/datasets/derain/test_nature"
-    imgs = glob.glob(os.path.join(input_path, "*.jpg"))
-    print("Process test nature, total length, ", len(imgs))
     return imgs, imgs
 
 def obtain_test(dataset_name):
@@ -171,20 +139,12 @@ def obtain_test(dataset_name):
         imgs, gts = test_Rain800()
     elif dataset_name == "spa":
         imgs, gts = test_spa()
-    elif dataset_name == "Rain1200":
-        imgs, gts = test_Rain1200()
+    elif dataset_name == "DID":
+        imgs, gts = test_DID()
     elif dataset_name == "Rain1400":
-        imgs, gts = test_Rain1400()
-    elif dataset_name == "Rain12":
-        imgs, gts = test_Rain12()
-    elif dataset_name == "Practical":
-        imgs, gts = test_Practical()
+        imgs, gts = test_DDN()
     elif dataset_name == "Real_internet":
         imgs, gts = test_RealInt()
-    elif dataset_name == "Nature":
-        imgs, gts = test_Nature()
-    elif dataset_name == "test_eval":
-        imgs, gts = test_eval()
     return imgs, gts
     
 def obtain_model(opt):
@@ -248,8 +208,6 @@ def main():
     fil = open(os.path.join(opt.save_path, "log.txt"), "a+")
     with tqdm(zip(imgs, gts), ncols=100) as pbar_test: 
         for rain_img, gt_img in tqdm(zip(imgs, gts)):
-            # x = Image.open(rain_img).convert("RGB")
-            # y = Image.open(gt_img).convert("RGB")
             x = cv2.cvtColor(cv2.imread(rain_img), cv2.COLOR_BGR2RGB)
             y = cv2.cvtColor(cv2.imread(gt_img), cv2.COLOR_BGR2RGB)
             min_h = min(y.shape[0], y.shape[1])
@@ -264,8 +222,6 @@ def main():
                 padh = new_H - H if H%8!=0 else 0
                 padw = new_W - W if W%8!=0 else 0
                 x = F.pad(x, (0, padw, 0, padh), 'reflect')
-                sh, sw = (H - min_h) // 2, (W-min_h) // 2
-                # tran_x = tran_transform(x[:, :, sh:sh+min_h, sw:sw+min_h])
                 if opt.load_mode == "tran":
                     z, _ = encoder.encoder_k(tran_x.to(device))
                 else:
@@ -283,7 +239,6 @@ def main():
                 tran_x = tran_transform(x)
                 hs, ws = obtain_crops(base_h=opt.tile, base_w=opt.tile, H=H, W=W, stride=opt.tile-opt.tile_overlap)
                 batch_size = int(6* (512 // opt.tile)**2)
-                # print(batch_size)
                 batch_cnt = 0  
                 x_batch = []
                 all_crops = []

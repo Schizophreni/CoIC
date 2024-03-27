@@ -182,7 +182,7 @@ if __name__ == '__main__':
     parser.add_argument("--num_block", type=int, default=4, help="number of res blocks in each ProxNet")
     parser.add_argument("--inter_iter", type=int, default=17, help="number of inter_iteration")
     parser.add_argument("--batch_size", type=int, default=16, help="Training batch size")
-    parser.add_argument("--tot_iters", type=int, default=300000, help="Number of training epochs")
+    parser.add_argument("--tot_iters", type=int, default=260000, help="Number of training epochs")
     parser.add_argument("--stage1_iters", type=int, default=40000, help="Number of stage1 training epochs")
     parser.add_argument("--lr", type=float, default=1e-3, help="initial learning rate")
     parser.add_argument("--milestone", nargs='+', type=int, default=[25, 50, 75], help="when to decay lr")
@@ -190,9 +190,9 @@ if __name__ == '__main__':
     parser.add_argument("--save_freq", type=int, default=1, help='save intermediate model')
     parser.add_argument("--use_GPU", action="store_true", help='use GPU or not')
     parser.add_argument("--gpu_id", type=str, default="0", help='GPU id')
-    parser.add_argument("--data_paths", type=str, default="/home/wran/Public/datasets/derain/CoIC_datasets/Rain200H/train, \
-                       /home/wran/Public/datasets/derain/CoIC_datasets/Rain200L/train/, /home/wran/Public/datasets/derain/CoIC_datasets/Rain800/train/, \
-                       /home/wran/Public/datasets/derain/CoIC_datasets/DID/train, /home/wran/Public/datasets/derain/CoIC_datasets/DDN/train")
+    parser.add_argument("--data_paths", type=str, default="datasets/Rain200H/train, \
+                       datasets/Rain200L/train/, datasets/Rain800/train/, \
+                       datasets/DID/train, datasets/DDN/train")
     parser.add_argument("--model_name", type=str, default="RCDNet", help="training model name")
     parser.add_argument("--crop_size", type=int, default=64)
     parser.add_argument("--aug_times", type=int, default=1, help="augmentation times")

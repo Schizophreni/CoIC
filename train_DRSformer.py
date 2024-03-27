@@ -228,16 +228,15 @@ class Experiments:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='DRSformer_train')
     parser.add_argument("--batch_size", type=int, default=4, help="Training batch size")
-    parser.add_argument("--tot_iters", type=int, default=500000, help="Number of training epochs")
+    parser.add_argument("--tot_iters", type=int, default=400000, help="Number of training epochs")
     parser.add_argument("--lr", type=float, default=3e-4, help="initial learning rate")
     parser.add_argument("--save_path", type=str, default="checkpoints/DRSformer-H8L1214spascratch-coic", help='path to save models and log files')
     parser.add_argument("--save_freq", type=int, default=5000, help='save intermediate model')
     parser.add_argument("--use_GPU", action="store_true", help='use GPU or not')
     parser.add_argument("--gpu_id", type=str, default="3", help='GPU id')
-    parser.add_argument("--data_paths", type=str, default="/home1/zhangsy/rh/data/derain/Rain200H/train/, \
-                       /home1/zhangsy/rh/data/derain/Rain200L/train/, /home1/zhangsy/rh/data/derain/Rain800/train/,\
-                        /home1/zhangsy/rh/data/derain/Rain1200_new/train, /home1/zhangsy/rh/data/derain/Rain14000/train, \
-                        /home1/zhangsy/rh/data/derain/spa/")
+    parser.add_argument("--data_paths", type=str, default="datasets/Rain200H/train, \
+                       datasets/Rain200L/train/, datasets/Rain800/train/, \
+                       datasets/DID/train, datasets/DDN/train, datasets/spa")
     parser.add_argument("--model_name", type=str, default="DRSformer", help="training model name")
     parser.add_argument("--crop_size", type=int, default=128)
     parser.add_argument("--aug_times", type=int, default=1, help="augmentation times")
