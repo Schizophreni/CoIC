@@ -2,6 +2,8 @@
 
 ### Harnessing Joint Rain-/Detail-aware Representations to Eliminate Intricate Rains (ICLR 2024 poster)
 
+***Pre-trained checkpoints will be uploaded soon.***
+
 [Wu Ran](https://github.com/Schizophrenip), [Peirong Ma](https://github.com/MPR666), [Zhiquan He](https://github.com/hezhiquan), [Hao Ren](https://github.com/leftthomas), [Hong Lu](https://github.com/Helencn)
 
 [paper download](https://openreview.net/pdf?id=pdJXYfJjz9)
