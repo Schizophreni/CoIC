@@ -29,6 +29,31 @@ The results tabulated above demonstrate that **a pre-trained DRSformer model can
 
 ---
 
+### Evaluation
+
+Please follow the instruction below to test the model:
+
+```
+# test model without CoIC
+python test_model.py --use_GPU --gpu_id gpu_id --test_model model_checkpoint_path --model_name model_name --load_mode normal
+
+# test model with CoIC
+# --load_mode [base|tran]: base for non-modulation, tran for modulation
+python test_model.py --use_GPU --gpu_id gpu_id --test_model model_checkpoint_path --feat_ext encoder_checkpoint_path --model_name model_name --load_mode tran
+
+```
+
+We evaluate PSNR/SSIM referred to the Python code from this repository: https://github.com/leftthomas/Restormer
+
+You can access the pretrained checkpoints for different baseline models:
+
+| Model    | BRN       | RCDNet    | DGUNet    | IDT       | DRSformer  on synthetic datasets | DRSformer *tuned* on SPAData | DRSformer *trained* adding SPAData |
+| -------- | --------- | --------- | --------- | --------- | -------------------------------- | ---------------------------- | ---------------------------------- |
+| Baseline | [model]() | [model]() | [model]() | [model]() | [model]()                        | [model]()                    | [model]()                          |
+| w/ CoIC  | [model]() | [model]() | [model]() | [model]() | [model]()                        | [model]()                    | [model]()                          |
+
+You can also download pre-trained checkpoints for Syn2Real and DCD-GAN: [Syn2Real](), [DCD-GAN]().
+
 ### Datasets
 
 |    Dataset     |                           Rain200L                           |                           Rain200H                           | Rain800  |                           DID-Data                           |                          DDN-Data                          |                           SPAData                            |                           RealInt                            |
@@ -91,19 +116,6 @@ python train_DRSformer.py --model_name DRSformer --use_GPU --gpu_id gpu_id --con
 ```
 
 In practice, we found that DGUNet trained with CoIC may struggle with NaN loss for unknown reasons, just stop it and train it from latest checkpoints.
-
-### Evaluation
-
-Please follow the instruction below to test the model:
-```
-# test model without CoIC
-python test_model.py --use_GPU --gpu_id gpu_id --test_model model_checkpoint_path --model_name model_name --load_mode normal
-
-# test model with CoIC
-python test_model.py --use_GPU --gpu_id gpu_id --test_model model_checkpoint_path --feat_ext encoder_checkpoint_path --model_name model_name --load_mode tran
-```
-
-We evaluate PSNR/SSIM referred to the Python code from this repository: https://github.com/leftthomas/Restormer
 
 ****
 
