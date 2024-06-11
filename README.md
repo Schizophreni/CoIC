@@ -49,8 +49,8 @@ You can access the pretrained checkpoints for different baseline models:
 
 | Model    | BRN                                                          | RCDNet    | DGUNet    | IDT       | DRSformer  on synthetic datasets | DRSformer *tuned* on SPAData | DRSformer *trained* adding SPAData |
 | -------- | ------------------------------------------------------------ | --------- | --------- | --------- | -------------------------------- | ---------------------------- | ---------------------------------- |
-| Baseline | [model](checkpoints/brn_model.pth)                           | [model]() | [model]() | [model]() | [model]()                        | [model]()                    | [model]()                          |
-| w/ CoIC  | [model](checkpoints/brn_model.pth) [encoder](checkpoints/brn_enc.pth) | [model]() | [model]() | [model]() | [model]()                        | [model]()                    | [model]()                          |
+| Baseline | [model](checkpoints/Baseline/brn_model.pth)                  | [model]() | [model]() | [model]() | [model]()                        | [model]()                    | [model]()                          |
+| w/ CoIC  | [model](checkpoints/CoIC/brn_model.pth) [encoder](checkpoints/CoIC/brn_enc.pth) | [model]() | [model]() | [model]() | [model]()                        | [model]()                    | [model]()                          |
 
 You can also download pre-trained checkpoints for Syn2Real and DCD-GAN: [Syn2Real](), [DCD-GAN]().
 
