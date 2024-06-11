@@ -216,12 +216,15 @@ def main():
                 x, y = torch.chunk(x, chunks=2, dim=-1)        
             H, W = x.shape[-2], x.shape[-1]
             if min(H, W) <= opt.tile:
+                # DGUNet and DRSformer have x8 downsampling
                 x = x.unsqueeze(0).to(device)
                 tran_x = tran_transform(x)
                 new_H, new_W = ((H + 8)//8)*8, ((W + 8)//8)*8
                 padh = new_H - H if H%8!=0 else 0
                 padw = new_W - W if W%8!=0 else 0
-                x = F.pad(x, (0, padw, 0, padh), 'reflect')
+                if opt.model_name in ["DGUNet", "DRSformer"]:
+                    x = F.pad(x, (0, padw, 0, padh), 'reflect')
+                
                 if opt.load_mode == "tran":
                     z, _ = encoder.encoder_k(tran_x.to(device))
                 else:
